@@ -7,6 +7,7 @@ namespace Core.Entities
     {
         public int Id { get; set; }   
         [MaxLength(50)]
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
         public ICollection<User> Users { get; set; } = new HashSet<User>();
