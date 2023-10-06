@@ -4,14 +4,19 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Infrastructure.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FiltroMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateTable(
                 name: "Especialidades",
                 columns: table => new
@@ -64,7 +69,7 @@ namespace Infrastructure.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Propietario",
+                name: "Propietarios",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -78,7 +83,7 @@ namespace Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Propietario", x => x.Id);
+                    table.PrimaryKey("PK_Propietarios", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -102,6 +107,43 @@ namespace Infrastructure.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    IdUser = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DateCreation = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ExpirationDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    IsRevoked = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    IsActive = table.Column<bool>(type: "tinyint(1)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Rols",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Description = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Rols", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "TipoMovimientos",
                 columns: table => new
                 {
@@ -113,6 +155,25 @@ namespace Infrastructure.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TipoMovimientos", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "user",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Username = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Password = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -210,9 +271,34 @@ namespace Infrastructure.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_mascota_Propietario_PropietarioId",
+                        name: "FK_mascota_Propietarios_PropietarioId",
                         column: x => x.PropietarioId,
-                        principalTable: "Propietario",
+                        principalTable: "Propietarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserRols",
+                columns: table => new
+                {
+                    IdUser = table.Column<int>(type: "int", nullable: false),
+                    IdRol = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRols", x => new { x.IdUser, x.IdRol });
+                    table.ForeignKey(
+                        name: "FK_UserRols_Rols_IdRol",
+                        column: x => x.IdRol,
+                        principalTable: "Rols",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRols_user_IdUser",
+                        column: x => x.IdUser,
+                        principalTable: "user",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -362,6 +448,114 @@ namespace Infrastructure.Data.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.InsertData(
+                table: "Especialidades",
+                columns: new[] { "Id", "Descripcion", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "...", "Cirujano Vascular" },
+                    { 2, "...", "Terapia" },
+                    { 3, "...", "Psicologo" },
+                    { 4, "...", "Enfermera" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Especies",
+                columns: new[] { "Id", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, "Felino" },
+                    { 2, "Canino" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Laboratorios",
+                columns: new[] { "Id", "Direccion", "Nombre", "Telefono" },
+                values: new object[,]
+                {
+                    { 1, "Calle labora 1 ", "Genfar", "435234234" },
+                    { 2, "Calle labora 2", "Laboratorio 1", "435234234" },
+                    { 3, "Calle labora 3", "Laboratorio 2", "435234234" },
+                    { 4, "Calle labora 4", "Laboratorio 3", "435234234" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Propietarios",
+                columns: new[] { "Id", "Email", "Nombre", "Telefono" },
+                values: new object[,]
+                {
+                    { 1, "esteban@gmail.com", "Esteban", "213123123" },
+                    { 2, "propietario1@gmail.com", "Propietario1", "213123123" },
+                    { 3, "propietario2@gmail.com", "Propietario2", "213123123" },
+                    { 4, "propietario3@gmail.com", "Propietario3", "213123123" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Rols",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "...", "Manager" },
+                    { 2, "...", "Admin" },
+                    { 3, "...", "Employee" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "mascota",
+                columns: new[] { "Id", "EspecieId", "FechaNacimiento", "Nombre", "PropietarioId" },
+                values: new object[,]
+                {
+                    { 1, 2, new DateOnly(2019, 7, 3), "Mini", 1 },
+                    { 2, 2, new DateOnly(2020, 6, 3), "Mascota 1", 2 },
+                    { 3, 1, new DateOnly(2017, 1, 3), "Mascota 2", 3 },
+                    { 4, 1, new DateOnly(2019, 8, 3), "Mascota 3", 4 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "medicamento",
+                columns: new[] { "Id", "CantidadDisponible", "LaboratorioId", "Nombre", "Precio" },
+                values: new object[,]
+                {
+                    { 1, 20, 1, "Medicamento 1", 56000.0 },
+                    { 2, 12, 1, "Medicamento 2", 67000.0 },
+                    { 3, 65, 2, "Medicamento 3", 10000.0 },
+                    { 4, 32, 3, "Medicamento 4", 16500.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "raza",
+                columns: new[] { "Id", "EspecieId", "Nombre" },
+                values: new object[,]
+                {
+                    { 1, 2, "Bull Dog" },
+                    { 2, 2, "Pincher" },
+                    { 3, 1, "Leon" },
+                    { 4, 1, "Gato" },
+                    { 5, 1, "Tigrillo" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "veterinario",
+                columns: new[] { "Id", "Email", "EspecialidadId", "Nombre", "Telefono" },
+                values: new object[,]
+                {
+                    { 1, "veterinario1@gmail.com", 1, "Veterinario 1", "4352345" },
+                    { 2, "veterinario2@gmail.com", 1, "Veterinario 2", "4352345" },
+                    { 3, "veterinario3@gmail.com", 2, "Veterinario 3", "4352345" },
+                    { 4, "veterinario4@gmail.com", 3, "Veterinario 4", "4352345" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "cita",
+                columns: new[] { "Id", "Fecha", "MascotaId", "Motivo", "VeterinarioId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 1, 23, 0, 0, 0, 0, DateTimeKind.Unspecified), 1, "Vacunacion recien nacido", 1 },
+                    { 2, new DateTime(2022, 5, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, "Revicion preventiva", 2 },
+                    { 3, new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, "Vacunacion contra pulgas", 3 },
+                    { 4, new DateTime(2021, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), 4, "Terapias", 4 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_cita_MascotaId",
                 table: "cita",
@@ -428,6 +622,17 @@ namespace Infrastructure.Data.Migrations
                 column: "MedicamentoId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_user_Username_Email",
+                table: "user",
+                columns: new[] { "Username", "Email" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRols_IdRol",
+                table: "UserRols",
+                column: "IdRol");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_veterinario_EspecialidadId",
                 table: "veterinario",
                 column: "EspecialidadId");
@@ -446,7 +651,13 @@ namespace Infrastructure.Data.Migrations
                 name: "raza");
 
             migrationBuilder.DropTable(
+                name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
                 name: "tratamiento_medico");
+
+            migrationBuilder.DropTable(
+                name: "UserRols");
 
             migrationBuilder.DropTable(
                 name: "movimiento_medicamento");
@@ -456,6 +667,12 @@ namespace Infrastructure.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "cita");
+
+            migrationBuilder.DropTable(
+                name: "Rols");
+
+            migrationBuilder.DropTable(
+                name: "user");
 
             migrationBuilder.DropTable(
                 name: "TipoMovimientos");
@@ -476,7 +693,7 @@ namespace Infrastructure.Data.Migrations
                 name: "Especies");
 
             migrationBuilder.DropTable(
-                name: "Propietario");
+                name: "Propietarios");
 
             migrationBuilder.DropTable(
                 name: "Especialidades");

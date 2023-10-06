@@ -17,7 +17,7 @@ builder.Services.ConfigureCors();
 builder.Services.AddAplicacionServices();
 builder.Services.AddAutoMapper(Assembly.GetEntryAssembly());
 builder.Services.ConfigureRateLimiting();
-// builder.Services.ConfigureApiVersioning();
+builder.Services.ConfigureApiVersioning();
 builder.Services.AddJwt(builder.Configuration);
 
 builder.Services.AddDbContext<MainContext>(options => 

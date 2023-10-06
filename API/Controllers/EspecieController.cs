@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
+    [ApiVersion("1.0")]
+    [ApiVersion("1.1")]
     public class EspecieController : BaseApiController
     {
         public EspecieController(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
@@ -74,6 +76,7 @@ namespace API.Controllers
         }
 
         [HttpGet("paginacion")]
+        [MapToApiVersion("1.1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Pager<EspecieDto>>> GetPager([FromQuery] Params pagerParams)

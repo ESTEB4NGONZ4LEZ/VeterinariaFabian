@@ -25,7 +25,9 @@ namespace Infrastructure.Repository
                                                 (medicamento, laboratorio) => new
                                                 {
                                                     Medicamento = medicamento.Nombre,
-                                                    Laboratorio = laboratorio.Nombre
+                                                    Precio = medicamento.Precio,
+                                                    Laboratorio = laboratorio.Nombre,
+                                                    Direccion = laboratorio.Direccion
                                                 }
                                               ).Where(x => x.Laboratorio.ToLower() == "genfar")
                                               .ToListAsync();

@@ -14,18 +14,28 @@ namespace Infrastructure.Repository
 
         public async Task<dynamic> GetPropietarioxMasxotas()
         {
-            return await _context.Propietarios.Join 
+            return await _context.Propietarios.Select
                                               (
-                                                _context.Mascotas,
-                                                propietario => propietario.Id,
-                                                mascota => mascota.PropietarioId,
-                                                (propietario, mascota) => new 
+                                                propietario => new
                                                 {
+                                                    Id = propietario.Id,
                                                     Propietario = propietario.Nombre,
-                                                    Mascotas = mascota.Nombre
+                                                    Mascotas = _context.Mascotas.Select
+                                                                                (
+                                                                                    mascota => new
+                                                                                    {
+                                                                                        Id = mascota.Id,
+                                                                                        Mascota = mascota.Nombre,
+                                                                                        Especie = mascota.EspecieId,
+                                                                                        Propietario = mascota.PropietarioId,
+                                                                                        Nacimiento = mascota.FechaNacimiento
+                                                                                    } 
+                                                                                )
+                                                                                .Where(x => x.Propietario == propietario.Id)
+                                                                                .ToList()
+
                                                 }
-                                              )
-                                              .ToListAsync();
+                                              ).ToListAsync();
         }
     }
 }

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Data.Migrations
 {
     [DbContext(typeof(MainContext))]
-    [Migration("20231006131320_FiltroMigration")]
-    partial class FiltroMigration
+    [Migration("20231006180748_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,40 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("VeterinarioId");
 
                     b.ToTable("cita", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Fecha = new DateTime(2023, 1, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MascotaId = 1,
+                            Motivo = "Vacunacion recien nacido",
+                            VeterinarioId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Fecha = new DateTime(2022, 5, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MascotaId = 2,
+                            Motivo = "Revicion preventiva",
+                            VeterinarioId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Fecha = new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MascotaId = 3,
+                            Motivo = "Vacunacion contra pulgas",
+                            VeterinarioId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Fecha = new DateTime(2021, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MascotaId = 4,
+                            Motivo = "Terapias",
+                            VeterinarioId = 4
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.DetalleMovimiento", b =>
@@ -95,6 +129,32 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Especialidades");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Descripcion = "...",
+                            Nombre = "Cirujano Vascular"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Descripcion = "...",
+                            Nombre = "Terapia"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Descripcion = "...",
+                            Nombre = "Psicologo"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Descripcion = "...",
+                            Nombre = "Enfermera"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Especie", b =>
@@ -111,6 +171,18 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Especies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Felino"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Canino"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Laboratorio", b =>
@@ -136,6 +208,36 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Laboratorios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Direccion = "Calle labora 1 ",
+                            Nombre = "Genfar",
+                            Telefono = "435234234"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Direccion = "Calle labora 2",
+                            Nombre = "Laboratorio 1",
+                            Telefono = "435234234"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Direccion = "Calle labora 3",
+                            Nombre = "Laboratorio 2",
+                            Telefono = "435234234"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Direccion = "Calle labora 4",
+                            Nombre = "Laboratorio 3",
+                            Telefono = "435234234"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Mascota", b =>
@@ -165,6 +267,40 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("PropietarioId");
 
                     b.ToTable("mascota", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EspecieId = 2,
+                            FechaNacimiento = new DateOnly(2019, 7, 3),
+                            Nombre = "Mini",
+                            PropietarioId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EspecieId = 2,
+                            FechaNacimiento = new DateOnly(2020, 6, 3),
+                            Nombre = "Mascota 1",
+                            PropietarioId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EspecieId = 1,
+                            FechaNacimiento = new DateOnly(2017, 1, 3),
+                            Nombre = "Mascota 2",
+                            PropietarioId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            EspecieId = 1,
+                            FechaNacimiento = new DateOnly(2019, 8, 3),
+                            Nombre = "Mascota 3",
+                            PropietarioId = 4
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Medicamento", b =>
@@ -192,6 +328,40 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("LaboratorioId");
 
                     b.ToTable("medicamento", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CantidadDisponible = 20,
+                            LaboratorioId = 1,
+                            Nombre = "Medicamento 1",
+                            Precio = 56000.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CantidadDisponible = 12,
+                            LaboratorioId = 1,
+                            Nombre = "Medicamento 2",
+                            Precio = 67000.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CantidadDisponible = 65,
+                            LaboratorioId = 2,
+                            Nombre = "Medicamento 3",
+                            Precio = 10000.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CantidadDisponible = 32,
+                            LaboratorioId = 3,
+                            Nombre = "Medicamento 4",
+                            Precio = 16500.0
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.MedicamentoProveedor", b =>
@@ -259,7 +429,37 @@ namespace Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Propietario");
+                    b.ToTable("Propietarios");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "esteban@gmail.com",
+                            Nombre = "Esteban",
+                            Telefono = "213123123"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "propietario1@gmail.com",
+                            Nombre = "Propietario1",
+                            Telefono = "213123123"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "propietario2@gmail.com",
+                            Nombre = "Propietario2",
+                            Telefono = "213123123"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "propietario3@gmail.com",
+                            Nombre = "Propietario3",
+                            Telefono = "213123123"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Proveedor", b =>
@@ -306,6 +506,38 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("EspecieId");
 
                     b.ToTable("raza", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EspecieId = 2,
+                            Nombre = "Bull Dog"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EspecieId = 2,
+                            Nombre = "Pincher"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EspecieId = 1,
+                            Nombre = "Leon"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            EspecieId = 1,
+                            Nombre = "Gato"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            EspecieId = 1,
+                            Nombre = "Tigrillo"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.RefreshToken", b =>
@@ -356,6 +588,26 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rols");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "...",
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "...",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "...",
+                            Name = "Employee"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TipoMovimiento", b =>
@@ -476,6 +728,40 @@ namespace Infrastructure.Data.Migrations
                     b.HasIndex("EspecialidadId");
 
                     b.ToTable("veterinario", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "veterinario1@gmail.com",
+                            EspecialidadId = 1,
+                            Nombre = "Veterinario 1",
+                            Telefono = "4352345"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Email = "veterinario2@gmail.com",
+                            EspecialidadId = 1,
+                            Nombre = "Veterinario 2",
+                            Telefono = "4352345"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Email = "veterinario3@gmail.com",
+                            EspecialidadId = 2,
+                            Nombre = "Veterinario 3",
+                            Telefono = "4352345"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Email = "veterinario4@gmail.com",
+                            EspecialidadId = 3,
+                            Nombre = "Veterinario 4",
+                            Telefono = "4352345"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.Cita", b =>

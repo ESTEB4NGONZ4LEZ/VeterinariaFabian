@@ -585,6 +585,26 @@ namespace Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rols");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "...",
+                            Name = "Manager"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "...",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "...",
+                            Name = "Employee"
+                        });
                 });
 
             modelBuilder.Entity("Core.Entities.TipoMovimiento", b =>

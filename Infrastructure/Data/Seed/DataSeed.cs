@@ -87,6 +87,14 @@ namespace Infrastructure.Data.Seed
                             new Cita {Id = 3, MascotaId = 3, Fecha = new DateTime(2023, 03, 15), Motivo = "Vacunacion contra pulgas", VeterinarioId = 3},
                             new Cita {Id = 4, MascotaId = 4, Fecha = new DateTime(2021, 05, 24), Motivo = "Terapias", VeterinarioId = 4}
                         );
+
+            modelBuilder.Entity<Rol>()
+                        .HasData
+                        (
+                            new Rol {Id = 1, Name = "Manager", Description = "..."},
+                            new Rol {Id = 2, Name = "Admin", Description = "..."},
+                            new Rol {Id = 3, Name = "Employee", Description = "..."}
+                        );           
         }
     }
 }

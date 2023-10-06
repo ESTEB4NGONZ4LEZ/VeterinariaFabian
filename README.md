@@ -1,8 +1,8 @@
 ## VETERINARIA  
 
-Se ha creado una semilla para testear los endpoints.
-
-JWT y Refresh Token funcional.
+- Se ha creado una semilla para testear los endpoints.
+- JWT y Refresh Token funcional. ( El endpoint Get de medicamento utiliza autorizacion y se puede verificar por roles)
+- Todos los endpoints de paginacion usan la version 1.1 el resto usa la version 1.0 por defecto
 
 ### Consultas
 

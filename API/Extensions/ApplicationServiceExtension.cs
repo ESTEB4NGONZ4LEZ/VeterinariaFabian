@@ -60,7 +60,7 @@ namespace API.Extensions
             });
         }
 
-        /* public static void ConfigureApiVersioning(this IServiceCollection services)
+        public static void ConfigureApiVersioning(this IServiceCollection services)
         {
             services.AddApiVersioning(opt =>
             {
@@ -72,7 +72,7 @@ namespace API.Extensions
                     new HeaderApiVersionReader("X-Version")
                 );
             });
-        } */
+        }
 
         public static void AddJwt(this IServiceCollection services, IConfiguration config)
         {
@@ -87,11 +87,12 @@ namespace API.Extensions
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidateLifetime = false,
+                    ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = config.GetSection("Jwt:Issuer").ToString(),
-                    ValidAudience = config.GetSection("Jwt:Audience").ToString(),
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("Jwt:Key").ToString()))
+                    ClockSkew = TimeSpan.Zero,
+                    ValidIssuer = config.GetSection("Jwt:Issuer").Value,
+                    ValidAudience = config.GetSection("Jwt:Audience").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("Jwt:Key").Value))
                 };
             });
             services.AddAuthorization();
